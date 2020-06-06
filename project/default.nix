@@ -34,7 +34,11 @@ let
     dist-newstyle
     .ghc.environment*
     '';
-  haskOverrides = new: old: builtins.mapAttrs (name: src: new.callCabal2nix name (ignore src) {}) packages;
+  toolingOverrides = new: {
+    expresso = new.callPackage ./expresso/package.nix {};
+  };
+  projectOverrides = new: builtins.mapAttrs (name: src: new.callCabal2nix name (ignore src) {}) packages;
+  haskOverrides = new: old: toolingOverrides new // projectOverrides new;
 in {
   inherit pkgs;
   packages = builtins.mapAttrs (name: _: pkgs.haskellPackages."${name}") packages;
