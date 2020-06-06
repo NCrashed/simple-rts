@@ -17,10 +17,12 @@
 }:
 let
   pkgs = nixpkgs { inherit config; };
+  lib  = pkgs.haskell.lib;
   config = {
     packageOverrides = pkgs: rec {
       haskellPackages = pkgs.haskellPackages.override { overrides = haskOverrides; };
     };
+    allowBroken = true;
   };
   gitignore = pkgs.callPackage (pkgs.fetchFromGitHub {
     owner  = "siers";
@@ -34,7 +36,9 @@ let
     dist-newstyle
     .ghc.environment*
     '';
-  haskOverrides = new: old: builtins.mapAttrs (name: src: new.callCabal2nix name (ignore src) {}) packages;
+  haskOverrides = new: old: projectPkgs new // overridesDir new old;
+  projectPkgs = new: builtins.mapAttrs (name: src: new.callCabal2nix name (ignore src) {}) packages;
+  overridesDir = new: old: lib.packagesFromDirectory { directory = ../derivations; } new old;
 in {
   inherit pkgs;
   packages = builtins.mapAttrs (name: _: pkgs.haskellPackages."${name}") packages;
