@@ -19,8 +19,9 @@ let
   pkgs = nixpkgs { inherit config; };
   lib  = pkgs.haskell.lib;
   config = {
-    packageOverrides = pkgs: rec {
-      haskellPackages = pkgs.haskellPackages.override { overrides = haskOverrides; };
+    packageOverrides = new: rec {
+      haskellPackages = new.haskellPackages.override { overrides = haskOverrides; };
+      simple-rts-c = new.callPackage ../simple-rts.nix { simple-rts = pkgs.haskellPackages.simple-rts; };
     };
     allowBroken = true;
   };
