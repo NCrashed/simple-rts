@@ -2,6 +2,7 @@ module Ivory.SDL(
     sdlModule
   -- * Initialization
   , sdlInit
+  , sdlQuit
   -- ** Init flags
   , InitFlag
   , sdlInitTimer
@@ -20,6 +21,7 @@ module Ivory.SDL(
   , sdlCreateWindow
   , sdlWindowPosCentered
   , sdlWindowPosUndefined
+  , sdlDestroyWindow
   -- ** Window flags
   , WindowFlag
   , sdlWindowFullscreen
@@ -36,6 +38,7 @@ module Ivory.SDL(
   -- * Renderer
   , SDLRenderer
   , sdlCreateRenderer
+  , sdlDestroyRenderer
   -- ** Renderer flags
   , RenderFlag
   , sdlRendererSoftware
@@ -121,6 +124,12 @@ sdlWindowMaximized          = extern "SDL_WINDOW_MAXIMIZED" "SDL.h"
 sdlWindowInputGrabbed       = extern "SDL_WINDOW_INPUT_GRABBED" "SDL.h"
 sdlWindowAllowHighDpi       = extern "SDL_WINDOW_ALLOW_HIGHDPI" "SDL.h"
 
+sdlDestroyWindow :: Def ('[SDLWindow] :-> ())
+sdlDestroyWindow = importProc "SDL_DestroyWindow" "SDL.h"
+
+sdlQuit :: Def ('[] :-> ())
+sdlQuit = importProc "SDL_Quit" "SDL.h"
+
 type SDLRenderer = Pointer Nullable Mutable Global (Stored OpaqueType)
 
 type RenderFlag = Uint32
@@ -134,10 +143,16 @@ sdlRendererTargetTexture = extern "SDL_RENDERER_TARGETTEXTURE" "SDL.h"
 sdlCreateRenderer :: Def ('[SDLWindow, Sint32, RenderFlag] :-> SDLRenderer)
 sdlCreateRenderer = importProc "SDL_CreateRenderer" "SDL.h"
 
+sdlDestroyRenderer :: Def ('[SDLRenderer] :-> ())
+sdlDestroyRenderer = importProc "SDL_DestroyRenderer" "SDL.h"
+
 sdlModule :: Module
 sdlModule = package "ivory_sdl" $ do
   incl sdlInit
+  incl sdlQuit
   incl (sdlLog :: Def ('[IString] :-> ()))
   incl sdlGetError
   incl sdlCreateWindow
+  incl sdlDestroyWindow
   incl sdlCreateRenderer
+  incl sdlDestroyRenderer
