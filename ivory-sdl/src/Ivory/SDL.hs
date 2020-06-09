@@ -45,6 +45,14 @@ module Ivory.SDL(
   , sdlRendererAccelerated
   , sdlRendererPresentVSync
   , sdlRendererTargetTexture
+  -- * Surface
+  , SDLSurface
+  , sdlLoadBMP
+  , sdlFreeSurface
+  -- * Texture
+  , SDLTexture
+  , sdlCreateTextureFromSurface
+  , sdlDestroyTexture
   ) where
 
 import Ivory.Language
@@ -146,6 +154,22 @@ sdlCreateRenderer = importProc "SDL_CreateRenderer" "SDL.h"
 sdlDestroyRenderer :: Def ('[SDLRenderer] :-> ())
 sdlDestroyRenderer = importProc "SDL_DestroyRenderer" "SDL.h"
 
+type SDLSurface = Pointer Nullable Mutable Global (Stored OpaqueType)
+
+sdlLoadBMP :: Def ('[IString] :-> SDLSurface)
+sdlLoadBMP = importProc "SDL_LoadBMP" "SDL.h"
+
+sdlFreeSurface :: Def ('[SDLSurface] :-> ())
+sdlFreeSurface = importProc "SDL_FreeSurface" "SDL.h"
+
+type SDLTexture = Pointer Nullable Mutable Global (Stored OpaqueType)
+
+sdlCreateTextureFromSurface :: Def ('[IString] :-> SDLTexture)
+sdlCreateTextureFromSurface = importProc "SDL_CreateTextureFromSurface" "SDL.h"
+
+sdlDestroyTexture :: Def ('[SDLTexture] :-> ())
+sdlDestroyTexture = importProc "SDL_DestroyTexture" "SDL.h"
+
 sdlModule :: Module
 sdlModule = package "ivory_sdl" $ do
   incl sdlInit
@@ -156,3 +180,7 @@ sdlModule = package "ivory_sdl" $ do
   incl sdlDestroyWindow
   incl sdlCreateRenderer
   incl sdlDestroyRenderer
+  incl sdlLoadBMP
+  incl sdlFreeSurface
+  incl sdlCreateTextureFromSurface
+  incl sdlDestroyTexture
