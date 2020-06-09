@@ -39,6 +39,11 @@ module Ivory.SDL(
   , SDLRenderer
   , sdlCreateRenderer
   , sdlDestroyRenderer
+  , sdlRenderClear
+  , SDLRect
+  , sdlRenderCopy
+  , sdlRenderPresent
+  , sdlDelay
   -- ** Renderer flags
   , RenderFlag
   , sdlRendererSoftware
@@ -71,7 +76,7 @@ sdlInitGameController = extern "SDL_INIT_GAMECONTROLLER" "SDL.h"
 sdlInitEvents         = extern "SDL_INIT_EVENTS" "SDL.h"
 sdlInitEverything     = extern "SDL_INIT_EVERYTHING" "SDL.h"
 
-sdlInit :: Def ('[InitFlag] :-> IBool)
+sdlInit :: Def ('[InitFlag] :-> Sint32)
 sdlInit = importProc "SDL_Init" "SDL.h"
 
 class SdlLog a where
@@ -170,6 +175,20 @@ sdlCreateTextureFromSurface = importProc "SDL_CreateTextureFromSurface" "SDL.h"
 sdlDestroyTexture :: Def ('[SDLTexture] :-> ())
 sdlDestroyTexture = importProc "SDL_DestroyTexture" "SDL.h"
 
+sdlRenderClear :: Def ('[SDLRenderer] :-> Sint32)
+sdlRenderClear = importProc "SDL_RenderClear" "SDL.h"
+
+type SDLRect = Pointer Nullable Mutable Global (Stored OpaqueType)
+
+sdlRenderCopy :: Def ('[SDLRenderer, SDLTexture, SDLRect, SDLRect] :-> Sint32)
+sdlRenderCopy = importProc "SDL_RenderCopy" "SDL.h"
+
+sdlRenderPresent :: Def ('[SDLRenderer] :-> Sint32)
+sdlRenderPresent = importProc "SDL_RenderPresent" "SDL.h"
+
+sdlDelay :: Def ('[Uint32] :-> ())
+sdlDelay = importProc "SDL_Delay" "SDL.h"
+
 sdlModule :: Module
 sdlModule = package "ivory_sdl" $ do
   incl sdlInit
@@ -184,3 +203,7 @@ sdlModule = package "ivory_sdl" $ do
   incl sdlFreeSurface
   incl sdlCreateTextureFromSurface
   incl sdlDestroyTexture
+  incl sdlRenderClear
+  incl sdlRenderCopy
+  incl sdlRenderPresent
+  incl sdlDelay
