@@ -5,5 +5,6 @@ let
 in project {
   packages = {
     simple-rts = ./simple-rts;
+    ivory-sdl = ./ivory-sdl;
   };
 }

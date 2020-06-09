@@ -1,2 +1,3 @@
 packages:
   ./simple-rts
+  ./ivory-sdl

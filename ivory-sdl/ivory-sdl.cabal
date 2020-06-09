@@ -1,0 +1,41 @@
+name:                ivory-sdl
+version:             0.1.0.0
+synopsis:            Bindings for SDL2 for Ivory langauge.
+description:
+  Incomplete bindings for SDL2 for [Ivory](https://ivorylang.org/) langauge.
+  .
+  See README.md
+license:             MIT
+license-file:        LICENSE
+copyright:           2020 Anton Gushcha
+maintainer:          Anton Gushcha <ncrashed@protonmail.com>
+category:            Ivory
+build-type:          Simple
+cabal-version:       1.24
+extra-source-files:
+  README.md
+  CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/NCrashed/simple-rts(ivory-sdl)
+
+library
+  hs-source-dirs:      src
+  exposed-modules:
+    Ivory.SDL
+  build-depends:
+      base            >= 4.5      && < 4.14
+    , ivory           >= 0.1.0.10 && < 0.2
+  default-language:    Haskell2010
+  default-extensions:
+    BangPatterns
+    DataKinds
+    DeriveGeneric
+    FlexibleInstances
+    OverloadedStrings
+    RankNTypes
+    RecordWildCards
+    ScopedTypeVariables
+    TupleSections
+    TypeOperators
