@@ -1,4 +1,4 @@
-MODULES=fib_test.c
+MODULES=main_game.c
 CFLAGS=-Wall -pedantic -Werror -Wshadow -Wstrict-aliasing -Wstrict-overflow $(shell pkg-config --cflags sdl2)
 LDFLAGS=$(shell pkg-config --libs sdl2)
 

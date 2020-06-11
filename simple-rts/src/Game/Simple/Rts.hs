@@ -1,23 +1,38 @@
 module Game.Simple.Rts(
-    fibModule
+    mainModule
   ) where
 
 import Ivory.Language
+import Ivory.SDL
 
-fibLoop :: Def ('[Ix 1000] :-> Uint32)
-fibLoop = proc "fibLoop" $ \n -> body $ do
-  a <- local (ival 0)
-  b <- local (ival 1)
+runGame :: Def ('[] :-> Sint32)
+runGame = proc "run_game" $ body $ do
+  checkFail "SDL_Init Error: %s\n" $ call sdlInit sdlInitEverything
+  ret 0
 
-  n `times` \_ -> do
-    a' <- deref a
-    b' <- deref b
-    store a b'
-    store b (a' + b')
+checkFail :: GetReturn eff ~ Returns Sint32 => IString -> Ivory eff Sint32 -> Ivory eff ()
+checkFail msg f = do
+  res <- f
+  ifte_ (res /=? 0) failCase (pure ())
+  where
+    failCase = do
+      er <- call sdlGetError
+      call_ sdlLog1 msg er
+      ret 1
 
-  result <- deref a
-  ret result
+  -- a <- local (ival 0)
+  -- b <- local (ival 1)
+  --
+  -- n `times` \_ -> do
+  --   a' <- deref a
+  --   b' <- deref b
+  --   store a b'
+  --   store b (a' + b')
+  --
+  -- result <- deref a
+  -- ret result
 
-fibModule :: Module
-fibModule = package "fib_test" $ do
-  incl fibLoop
+mainModule :: Module
+mainModule = package "main_game" $ do
+  depend sdlModule
+  incl runGame

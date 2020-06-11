@@ -14,7 +14,14 @@ module Ivory.SDL(
   , sdlInitEvents
   , sdlInitEverything
   -- * Logging
-  , SdlLog(..)
+  , sdlLog0
+  , sdlLog1
+  , sdlLog2
+  , sdlLog3
+  , sdlLog4
+  , sdlLog5
+  , sdlLog6
+  , sdlLog7
   , sdlGetError
   -- * Window
   , SDLWindow
@@ -79,32 +86,29 @@ sdlInitEverything     = extern "SDL_INIT_EVERYTHING" "SDL.h"
 sdlInit :: Def ('[InitFlag] :-> Sint32)
 sdlInit = importProc "SDL_Init" "SDL.h"
 
-class SdlLog a where
-  sdlLog :: Def ((IString ': a) ':-> ())
+sdlLog0 :: Def ('[IString] :-> ())
+sdlLog0 = importProc "SDL_Log" "SDL.h"
 
-instance SdlLog '[] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog1 :: IvoryType a => Def ('[IString, a] :-> ())
+sdlLog1 = importProc "SDL_Log" "SDL.h"
 
-instance IvoryType a => SdlLog '[a] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog2 :: (IvoryType a, IvoryType b) => Def ('[IString, a, b] :-> ())
+sdlLog2 = importProc "SDL_Log" "SDL.h"
 
-instance (IvoryType a, IvoryType b) => SdlLog '[a, b] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog3 :: (IvoryType a, IvoryType b, IvoryType c) => Def ('[IString, a, b, c] :-> ())
+sdlLog3 = importProc "SDL_Log" "SDL.h"
 
-instance (IvoryType a, IvoryType b, IvoryType c) => SdlLog '[a, b, c] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog4 :: (IvoryType a, IvoryType b, IvoryType c, IvoryType d) => Def ('[IString, a, b, c, d] :-> ())
+sdlLog4 = importProc "SDL_Log" "SDL.h"
 
-instance (IvoryType a, IvoryType b, IvoryType c, IvoryType d) => SdlLog '[a, b, c, d] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog5 :: (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e) => Def ('[IString, a, b, c, d, e] :-> ())
+sdlLog5 = importProc "SDL_Log" "SDL.h"
 
-instance (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e) => SdlLog '[a, b, c, d, e] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog6 :: (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e, IvoryType f) => Def ('[IString, a, b, c, d, e, f] :-> ())
+sdlLog6 = importProc "SDL_Log" "SDL.h"
 
-instance (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e, IvoryType f) => SdlLog '[a, b, c, d, e, f] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
-
-instance (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e, IvoryType f, IvoryType g) => SdlLog '[a, b, c, d, e, f, g] where
-  sdlLog = importProc "SDL_Log" "SDL.h"
+sdlLog7 :: (IvoryType a, IvoryType b, IvoryType c, IvoryType d, IvoryType e, IvoryType f, IvoryType g) => Def ('[IString, a, b, c, d, e, f, g] :-> ())
+sdlLog7 = importProc "SDL_Log" "SDL.h"
 
 sdlGetError :: Def ('[] :-> IString)
 sdlGetError = importProc "SDL_GetError" "SDL.h"
@@ -193,7 +197,7 @@ sdlModule :: Module
 sdlModule = package "ivory_sdl" $ do
   incl sdlInit
   incl sdlQuit
-  incl (sdlLog :: Def ('[IString] :-> ()))
+  incl sdlLog0
   incl sdlGetError
   incl sdlCreateWindow
   incl sdlDestroyWindow
@@ -207,3 +211,26 @@ sdlModule = package "ivory_sdl" $ do
   incl sdlRenderCopy
   incl sdlRenderPresent
   incl sdlDelay
+  inclSym sdlInitTimer
+  inclSym sdlInitAudio
+  inclSym sdlInitVideo
+  inclSym sdlInitJoystick
+  inclSym sdlInitHaptic
+  inclSym sdlInitGameController
+  inclSym sdlInitEvents
+  inclSym sdlInitEverything
+  inclSym sdlWindowFullscreen
+  inclSym sdlWindowFullscreenDesktop
+  inclSym sdlWindowOpenGL
+  inclSym sdlWindowVulkan
+  inclSym sdlWindowHidden
+  inclSym sdlWindowBorderless
+  inclSym sdlWindowResizable
+  inclSym sdlWindowMinimized
+  inclSym sdlWindowMaximized
+  inclSym sdlWindowInputGrabbed
+  inclSym sdlWindowAllowHighDpi
+  inclSym sdlRendererSoftware
+  inclSym sdlRendererAccelerated
+  inclSym sdlRendererPresentVSync
+  inclSym sdlRendererTargetTexture
