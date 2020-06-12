@@ -33,14 +33,14 @@ library
   hs-source-dirs:      src
   exposed-modules:
     Game.Simple.Rts
-    Ivory.Malloc
-    Ivory.String
   other-modules:
     Paths_simple_rts
   build-depends:
       base            >= 4.5      && < 4.14
     , ivory           >= 0.1.0.10 && < 0.2
     , ivory-sdl       >= 0.1      && < 0.2
+    , ivory-string    >= 0.1      && < 0.2
+    , ivory-memory    >= 0.1      && < 0.2
   default-language:    Haskell2010
   default-extensions:
     BangPatterns
@@ -66,6 +66,8 @@ executable simple-rts
       base
     , simple-rts
     , ivory-sdl
+    , ivory-string
+    , ivory-memory
     , ivory-artifact  >= 0.1    && < 0.2
     , ivory-backend-c >= 0.1    && < 0.2
   default-language:    Haskell2010

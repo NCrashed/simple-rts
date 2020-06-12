@@ -1,0 +1,45 @@
+name:                ivory-string
+version:             0.1.0.0
+synopsis:            Additional string helpers for Ivory langauge.
+description:
+  Manipulation with strings for [Ivory](https://ivorylang.org/) langauge.
+  .
+  The package contains non idiomatic helpers for Ivory. For instance, some functions
+  can dynamically allocate memory and need to be manually freed.
+  .
+  See README.md
+license:             MIT
+license-file:        LICENSE
+copyright:           2020 Anton Gushcha
+maintainer:          Anton Gushcha <ncrashed@protonmail.com>
+category:            Ivory
+build-type:          Simple
+cabal-version:       1.24
+extra-source-files:
+  README.md
+  CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/NCrashed/simple-rts(ivory-string)
+
+library
+  hs-source-dirs:      src
+  exposed-modules:
+    Ivory.String
+  build-depends:
+      base            >= 4.5      && < 4.14
+    , ivory           >= 0.1.0.10 && < 0.2
+    , ivory-memory    >= 0.1      && < 0.2
+  default-language:    Haskell2010
+  default-extensions:
+    BangPatterns
+    DataKinds
+    DeriveGeneric
+    FlexibleInstances
+    OverloadedStrings
+    RankNTypes
+    RecordWildCards
+    ScopedTypeVariables
+    TupleSections
+    TypeOperators

@@ -28,7 +28,6 @@ runGame = proc "run_game" $ \path -> body $ do
                   (call sdlCreateTextureFromSurface ren bmp)
                   (call_ sdlDestroyTexture) $ \tex -> do
                     (20 :: Ix 21) `times` \_ -> do
-                      call_ sdlLog0 "teest"
                       call_ sdlRenderClear ren
                       call_ sdlRenderCopy ren tex nullPtr nullPtr
                       call_ sdlRenderPresent ren
