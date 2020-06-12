@@ -33,6 +33,8 @@ library
   hs-source-dirs:      src
   exposed-modules:
     Game.Simple.Rts
+    Ivory.Malloc
+    Ivory.String
   other-modules:
     Paths_simple_rts
   build-depends:

@@ -1,7 +1,9 @@
 module Main where
 
 import Game.Simple.Rts
+import Ivory.Malloc
 import Ivory.SDL
+import Ivory.String
 
 import Ivory.Artifact
 import Ivory.Artifact.Location
@@ -14,6 +16,8 @@ main = runCompiler modules artifacts initialOpts { outDir = Just "cgen" }
     modules = [
         sdlModule
       , mainModule
+      , stringModule
+      , mallocModule
       ]
     artifacts = [
         cabalArtifact "main.c"

@@ -15,5 +15,5 @@ int main(int argc, char *argv[])
       return 1;
   }
 
-	return run_game();
+	return run_game(dirname(bpath));
 }

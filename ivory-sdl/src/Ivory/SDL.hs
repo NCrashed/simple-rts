@@ -35,6 +35,7 @@ module Ivory.SDL(
   , sdlWindowFullscreenDesktop
   , sdlWindowOpenGL
   , sdlWindowVulkan
+  , sdlWindowShown
   , sdlWindowHidden
   , sdlWindowBorderless
   , sdlWindowResizable
@@ -113,7 +114,7 @@ sdlLog7 = importProc "SDL_Log" "SDL.h"
 sdlGetError :: Def ('[] :-> IString)
 sdlGetError = importProc "SDL_GetError" "SDL.h"
 
-type SDLWindow = Pointer Nullable Mutable Global (Stored OpaqueType)
+type SDLWindow = Pointer Nullable Mutable Global (Stored ())
 
 type WindowFlag = Uint32
 
@@ -127,12 +128,14 @@ sdlWindowPosUndefined :: Sint32
 sdlWindowPosUndefined = extern "SDL_WINDOWPOS_UNDEFINED" "SDL.h"
 
 sdlWindowFullscreen, sdlWindowFullscreenDesktop, sdlWindowOpenGL, sdlWindowVulkan,
-  sdlWindowHidden, sdlWindowBorderless, sdlWindowResizable, sdlWindowMinimized,
-  sdlWindowMaximized, sdlWindowInputGrabbed, sdlWindowAllowHighDpi :: WindowFlag
+  sdlWindowHidden, sdlWindowShown, sdlWindowBorderless, sdlWindowResizable,
+  sdlWindowMinimized, sdlWindowMaximized, sdlWindowInputGrabbed,
+  sdlWindowAllowHighDpi :: WindowFlag
 sdlWindowFullscreen         = extern "SDL_WINDOW_FULLSCREEN" "SDL.h"
 sdlWindowFullscreenDesktop  = extern "SDL_WINDOW_FULLSCREEN_DESKTOP" "SDL.h"
 sdlWindowOpenGL             = extern "SDL_WINDOW_OPENGL" "SDL.h"
 sdlWindowVulkan             = extern "SDL_WINDOW_VULKAN" "SDL.h"
+sdlWindowShown              = extern "SDL_WINDOW_SHOWN" "SDL.h"
 sdlWindowHidden             = extern "SDL_WINDOW_HIDDEN" "SDL.h"
 sdlWindowBorderless         = extern "SDL_WINDOW_BORDERLESS" "SDL.h"
 sdlWindowResizable          = extern "SDL_WINDOW_RESIZABLE" "SDL.h"
@@ -147,7 +150,7 @@ sdlDestroyWindow = importProc "SDL_DestroyWindow" "SDL.h"
 sdlQuit :: Def ('[] :-> ())
 sdlQuit = importProc "SDL_Quit" "SDL.h"
 
-type SDLRenderer = Pointer Nullable Mutable Global (Stored OpaqueType)
+type SDLRenderer = Pointer Nullable Mutable Global (Stored ())
 
 type RenderFlag = Uint32
 
@@ -163,7 +166,7 @@ sdlCreateRenderer = importProc "SDL_CreateRenderer" "SDL.h"
 sdlDestroyRenderer :: Def ('[SDLRenderer] :-> ())
 sdlDestroyRenderer = importProc "SDL_DestroyRenderer" "SDL.h"
 
-type SDLSurface = Pointer Nullable Mutable Global (Stored OpaqueType)
+type SDLSurface = Pointer Nullable Mutable Global (Stored ())
 
 sdlLoadBMP :: Def ('[IString] :-> SDLSurface)
 sdlLoadBMP = importProc "SDL_LoadBMP" "SDL.h"
@@ -171,9 +174,9 @@ sdlLoadBMP = importProc "SDL_LoadBMP" "SDL.h"
 sdlFreeSurface :: Def ('[SDLSurface] :-> ())
 sdlFreeSurface = importProc "SDL_FreeSurface" "SDL.h"
 
-type SDLTexture = Pointer Nullable Mutable Global (Stored OpaqueType)
+type SDLTexture = Pointer Nullable Mutable Global (Stored ())
 
-sdlCreateTextureFromSurface :: Def ('[IString] :-> SDLTexture)
+sdlCreateTextureFromSurface :: Def ('[SDLRenderer, SDLSurface] :-> SDLTexture)
 sdlCreateTextureFromSurface = importProc "SDL_CreateTextureFromSurface" "SDL.h"
 
 sdlDestroyTexture :: Def ('[SDLTexture] :-> ())
@@ -182,7 +185,7 @@ sdlDestroyTexture = importProc "SDL_DestroyTexture" "SDL.h"
 sdlRenderClear :: Def ('[SDLRenderer] :-> Sint32)
 sdlRenderClear = importProc "SDL_RenderClear" "SDL.h"
 
-type SDLRect = Pointer Nullable Mutable Global (Stored OpaqueType)
+type SDLRect = Pointer Nullable Mutable Global (Stored ())
 
 sdlRenderCopy :: Def ('[SDLRenderer, SDLTexture, SDLRect, SDLRect] :-> Sint32)
 sdlRenderCopy = importProc "SDL_RenderCopy" "SDL.h"
@@ -223,6 +226,7 @@ sdlModule = package "ivory_sdl" $ do
   inclSym sdlWindowFullscreenDesktop
   inclSym sdlWindowOpenGL
   inclSym sdlWindowVulkan
+  inclSym sdlWindowShown
   inclSym sdlWindowHidden
   inclSym sdlWindowBorderless
   inclSym sdlWindowResizable
