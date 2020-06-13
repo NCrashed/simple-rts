@@ -20,12 +20,13 @@ main = runCompiler modules artifacts initialOpts { outDir = Just "cgen" }
     modules = [
         sdlModule
       , nuklearModule
-      , nuklearSDLModule
+      , nuklearSdlModule
       , mainModule
       , stringModule
       , mallocModule
       ]
-    artifacts = [
+    artifacts = nuklearArtifacts
+      ++ [
         cabalArtifact "main.c"
       , cabalArtifact "Makefile"
       ]
@@ -89,7 +90,7 @@ mainModule :: Module
 mainModule = package "main_game" $ do
   depend sdlModule
   depend nuklearModule
-  depend nuklearSDLModule
+  depend nuklearSdlModule
   depend mallocModule
   depend stringModule
   incl runGame

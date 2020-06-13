@@ -1,5 +1,5 @@
 MODULES=main_game.c
-CFLAGS=-Wall -pedantic -Werror -Wshadow -Wstrict-aliasing -Wstrict-overflow $(shell pkg-config --cflags sdl2 gl glu glew)
+CFLAGS=-Wall -pedantic -I. $(shell pkg-config --cflags sdl2 gl glu glew)
 LDFLAGS=$(shell pkg-config --libs sdl2 gl glu glew) -lm
 
 all: main.c

@@ -29,9 +29,13 @@ library
   exposed-modules:
     Ivory.Nuklear
     Ivory.Nuklear.SDL
+  other-modules:
+    Paths_ivory_nuklear
   build-depends:
       base            >= 4.5      && < 4.14
     , ivory           >= 0.1.0.10 && < 0.2
+    , ivory-artifact  >= 0.1      && < 0.2
+    , ivory-sdl       >= 0.1      && < 0.2
   default-language:    Haskell2010
   default-extensions:
     BangPatterns

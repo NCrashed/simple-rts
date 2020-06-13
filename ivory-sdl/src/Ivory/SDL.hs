@@ -66,6 +66,98 @@ module Ivory.SDL(
   , SDLTexture
   , sdlCreateTextureFromSurface
   , sdlDestroyTexture
+  -- * Events
+  , SDLEvent
+  -- * Context
+  , SDLContext
+  -- ** GL attribues
+  , SDLGlAttr
+  , sdlGlSetAttribute
+  , sdlGlRedSize
+  , sdlGlGreenSize
+  , sdlGlBlueSize
+  , sdlGlAlphaSize
+  , sdlGlBufferSize
+  , sdlGlDoublebuffer
+  , sdlGlDepthSize
+  , sdlGlStencilSize
+  , sdlGlAccumRedSize
+  , sdlGlAccumGreenSize
+  , sdlGlAccumBlueSize
+  , sdlGlAccumAlphaSize
+  , sdlGlStereo
+  , sdlGlMultisamplebuffers
+  , sdlGlMultisamplesamples
+  , sdlGlAcceleratedVisual
+  , sdlGlContextMajorVersion
+  , sdlGlContextMinorVersion
+  , sdlGlContextFlags
+  , sdlGlContextProfileMask
+  , sdlGlShareWithCurrentContext
+  , sdlGlFramebufferSrgbCapable
+  , sdlGlContextReleaseBehavior
+  -- ** GL context flags
+  , SDLGlContextFlag
+  , sdlGlContextDebugFlag
+  , sdlGlContextForwardCompatibleFlag
+  , sdlGlContextRobustAccessFlag
+  , sdlGlContextResetIsolationFlag
+  -- ** GL profile
+  , SDLGlProfile
+  , sdlGlContextProfileCore
+  , sdlGlContextProfileCompatibility
+  , sdlGlContextProfileEs
+  -- * Hints
+  , sdlSetHint
+  , SDLHint
+  , sdlHintAccelerometerAsJoystick
+  , sdlHintAndroidApkExpansionMainFileVersion
+  , sdlHintAndroidApkExpansionPatchFileVersion
+  , sdlHintAndroidSeparateMouseAndTouch
+  , sdlHintAppleTvControllerUiEvents
+  , sdlHintAppleTvRemoteAllowRotation
+  , sdlHintBmpSaveLegacyFormat
+  , sdlHintEmscriptenKeyboardElement
+  , sdlHintFramebufferAcceleration
+  , sdlHintGamecontrollerconfig
+  , sdlHintGrabKeyboard
+  , sdlHintIdleTimerDisabled
+  , sdlHintImeInternalEditing
+  , sdlHintJoystickAllowBackgroundEvents
+  , sdlHintMacBackgroundApp
+  , sdlHintMacCtrlClickEmulateRightClick
+  , sdlHintMouseFocusClickthrough
+  , sdlHintMouseRelativeModeWarp
+  , sdlHintNoSignalHandlers
+  , sdlHintOrientations
+  , sdlHintRenderDirect3d11Debug
+  , sdlHintRenderDirect3dThreadsafe
+  , sdlHintRenderDriver
+  , sdlHintRenderOpenglShaders
+  , sdlHintRenderScaleQuality
+  , sdlHintRenderVsync
+  , sdlHintRpiVideoLayer
+  , sdlHintThreadStackSize
+  , sdlHintTimerResolution
+  , sdlHintVideoAllowScreensaver
+  , sdlHintVideoHighdpiDisabled
+  , sdlHintVideoMacFullscreenSpaces
+  , sdlHintVideoMinimizeOnFocusLoss
+  , sdlHintVideoWindowSharePixelFormat
+  , sdlHintVideoWinD3dcompiler
+  , sdlHintVideoX11NetWmPing
+  , sdlHintVideoX11Xinerama
+  , sdlHintVideoX11Xrandr
+  , sdlHintVideoX11Xvidmode
+  , sdlHintWindowsDisableThreadNaming
+  , sdlHintWindowsEnableMessageloop
+  , sdlHintWindowsNoCloseOnAltF4
+  , sdlHintWindowFrameUsableWhileCursorHidden
+  , sdlHintWinrtHandleBackButton
+  , sdlHintWinrtPrivacyPolicyLabel
+  , sdlHintWinrtPrivacyPolicyUrl
+  , sdlHintXinputEnabled
+  , sdlHintXinputUseOldJoystickMapping
   ) where
 
 import Ivory.Language
@@ -114,7 +206,7 @@ sdlLog7 = importProc "SDL_Log" "SDL.h"
 sdlGetError :: Def ('[] :-> IString)
 sdlGetError = importProc "SDL_GetError" "SDL.h"
 
-type SDLWindow = Pointer Nullable Mutable Global (Stored ())
+type SDLWindow = Ptr Global (Stored ())
 
 type WindowFlag = Uint32
 
@@ -150,7 +242,7 @@ sdlDestroyWindow = importProc "SDL_DestroyWindow" "SDL.h"
 sdlQuit :: Def ('[] :-> ())
 sdlQuit = importProc "SDL_Quit" "SDL.h"
 
-type SDLRenderer = Pointer Nullable Mutable Global (Stored ())
+type SDLRenderer = Ptr Global (Stored ())
 
 type RenderFlag = Uint32
 
@@ -166,7 +258,7 @@ sdlCreateRenderer = importProc "SDL_CreateRenderer" "SDL.h"
 sdlDestroyRenderer :: Def ('[SDLRenderer] :-> ())
 sdlDestroyRenderer = importProc "SDL_DestroyRenderer" "SDL.h"
 
-type SDLSurface = Pointer Nullable Mutable Global (Stored ())
+type SDLSurface = Ptr Global (Stored ())
 
 sdlLoadBMP :: Def ('[IString] :-> SDLSurface)
 sdlLoadBMP = importProc "SDL_LoadBMP" "SDL.h"
@@ -174,7 +266,7 @@ sdlLoadBMP = importProc "SDL_LoadBMP" "SDL.h"
 sdlFreeSurface :: Def ('[SDLSurface] :-> ())
 sdlFreeSurface = importProc "SDL_FreeSurface" "SDL.h"
 
-type SDLTexture = Pointer Nullable Mutable Global (Stored ())
+type SDLTexture = Ptr Global (Stored ())
 
 sdlCreateTextureFromSurface :: Def ('[SDLRenderer, SDLSurface] :-> SDLTexture)
 sdlCreateTextureFromSurface = importProc "SDL_CreateTextureFromSurface" "SDL.h"
@@ -185,7 +277,7 @@ sdlDestroyTexture = importProc "SDL_DestroyTexture" "SDL.h"
 sdlRenderClear :: Def ('[SDLRenderer] :-> Sint32)
 sdlRenderClear = importProc "SDL_RenderClear" "SDL.h"
 
-type SDLRect = Pointer Nullable Mutable Global (Stored ())
+type SDLRect = Ptr Global (Stored ())
 
 sdlRenderCopy :: Def ('[SDLRenderer, SDLTexture, SDLRect, SDLRect] :-> Sint32)
 sdlRenderCopy = importProc "SDL_RenderCopy" "SDL.h"
@@ -195,6 +287,258 @@ sdlRenderPresent = importProc "SDL_RenderPresent" "SDL.h"
 
 sdlDelay :: Def ('[Uint32] :-> ())
 sdlDelay = importProc "SDL_Delay" "SDL.h"
+
+type SDLEvent = Ptr Global (Stored ())
+
+type SDLContext = Ptr Global (Stored ())
+
+sdlGlSetAttribute :: Def ('[SDLGlAttr, Sint32] :-> Sint32)
+sdlGlSetAttribute = importProc "SDL_GL_SetAttribute" "SDL.h"
+
+type SDLGlAttr = Sint32
+
+sdlGlRedSize :: SDLGlAttr
+sdlGlRedSize = extern "SDL_GL_RED_SIZE " "SDL.h"
+
+sdlGlGreenSize :: SDLGlAttr
+sdlGlGreenSize = extern "SDL_GL_GREEN_SIZE" "SDL.h"
+
+sdlGlBlueSize :: SDLGlAttr
+sdlGlBlueSize = extern "SDL_GL_BLUE_SIZE" "SDL.h"
+
+sdlGlAlphaSize :: SDLGlAttr
+sdlGlAlphaSize = extern "SDL_GL_ALPHA_SIZE" "SDL.h"
+
+sdlGlBufferSize :: SDLGlAttr
+sdlGlBufferSize = extern "SDL_GL_BUFFER_SIZE" "SDL.h"
+
+sdlGlDoublebuffer :: SDLGlAttr
+sdlGlDoublebuffer = extern "SDL_GL_DOUBLEBUFFER" "SDL.h"
+
+sdlGlDepthSize :: SDLGlAttr
+sdlGlDepthSize = extern "SDL_GL_DEPTH_SIZE" "SDL.h"
+
+sdlGlStencilSize :: SDLGlAttr
+sdlGlStencilSize = extern "SDL_GL_STENCIL_SIZE" "SDL.h"
+
+sdlGlAccumRedSize :: SDLGlAttr
+sdlGlAccumRedSize = extern "SDL_GL_ACCUM_RED_SIZE" "SDL.h"
+
+sdlGlAccumGreenSize :: SDLGlAttr
+sdlGlAccumGreenSize = extern "SDL_GL_ACCUM_GREEN_SIZE" "SDL.h"
+
+sdlGlAccumBlueSize :: SDLGlAttr
+sdlGlAccumBlueSize = extern "SDL_GL_ACCUM_BLUE_SIZE" "SDL.h"
+
+sdlGlAccumAlphaSize :: SDLGlAttr
+sdlGlAccumAlphaSize = extern "SDL_GL_ACCUM_ALPHA_SIZE" "SDL.h"
+
+sdlGlStereo :: SDLGlAttr
+sdlGlStereo = extern "SDL_GL_STEREO" "SDL.h"
+
+sdlGlMultisamplebuffers :: SDLGlAttr
+sdlGlMultisamplebuffers = extern "SDL_GL_MULTISAMPLEBUFFERS" "SDL.h"
+
+sdlGlMultisamplesamples :: SDLGlAttr
+sdlGlMultisamplesamples = extern "SDL_GL_MULTISAMPLESAMPLES" "SDL.h"
+
+sdlGlAcceleratedVisual :: SDLGlAttr
+sdlGlAcceleratedVisual = extern "SDL_GL_ACCELERATED_VISUAL" "SDL.h"
+
+sdlGlContextMajorVersion :: SDLGlAttr
+sdlGlContextMajorVersion = extern "SDL_GL_CONTEXT_MAJOR_VERSION" "SDL.h"
+
+sdlGlContextMinorVersion :: SDLGlAttr
+sdlGlContextMinorVersion = extern "SDL_GL_CONTEXT_MINOR_VERSION" "SDL.h"
+
+sdlGlContextFlags :: SDLGlAttr
+sdlGlContextFlags = extern "SDL_GL_CONTEXT_FLAGS" "SDL.h"
+
+sdlGlContextProfileMask :: SDLGlAttr
+sdlGlContextProfileMask = extern "SDL_GL_CONTEXT_PROFILE_MASK" "SDL.h"
+
+sdlGlShareWithCurrentContext :: SDLGlAttr
+sdlGlShareWithCurrentContext = extern "SDL_GL_SHARE_WITH_CURRENT_CONTEXT" "SDL.h"
+
+sdlGlFramebufferSrgbCapable :: SDLGlAttr
+sdlGlFramebufferSrgbCapable = extern "SDL_GL_FRAMEBUFFER_SRGB_CAPABLE" "SDL.h"
+
+sdlGlContextReleaseBehavior :: SDLGlAttr
+sdlGlContextReleaseBehavior = extern "SDL_GL_CONTEXT_RELEASE_BEHAVIOR" "SDL.h"
+
+type SDLGlContextFlag = IString
+
+sdlGlContextDebugFlag :: SDLGlContextFlag
+sdlGlContextDebugFlag = extern "SDL_GL_CONTEXT_DEBUG_FLAG" "SDL.h"
+
+sdlGlContextForwardCompatibleFlag :: SDLGlContextFlag
+sdlGlContextForwardCompatibleFlag = extern "SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG" "SDL.h"
+
+sdlGlContextRobustAccessFlag :: SDLGlContextFlag
+sdlGlContextRobustAccessFlag = extern "SDL_GL_CONTEXT_ROBUST_ACCESS_FLAG" "SDL.h"
+
+sdlGlContextResetIsolationFlag :: SDLGlContextFlag
+sdlGlContextResetIsolationFlag = extern "SDL_GL_CONTEXT_RESET_ISOLATION_FLAG" "SDL.h"
+
+type SDLGlProfile = IString
+
+sdlGlContextProfileCore :: SDLGlProfile
+sdlGlContextProfileCore = extern "SDL_GL_CONTEXT_PROFILE_CORE" "SDL.h"
+
+sdlGlContextProfileCompatibility :: SDLGlProfile
+sdlGlContextProfileCompatibility = extern "SDL_GL_CONTEXT_PROFILE_COMPATIBILITY" "SDL.h"
+
+sdlGlContextProfileEs :: SDLGlProfile
+sdlGlContextProfileEs = extern "SDL_GL_CONTEXT_PROFILE_ES" "SDL.h"
+
+type SDLHint = IString
+
+sdlSetHint :: Def ('[SDLHint, IString] :-> IBool)
+sdlSetHint = importProc "SDL_SetHint" "SDL.h"
+
+sdlHintAccelerometerAsJoystick :: SDLHint
+sdlHintAccelerometerAsJoystick = extern "SDL_HINT_ACCELEROMETER_AS_JOYSTICK" "SDL.h"
+
+sdlHintAndroidApkExpansionMainFileVersion :: SDLHint
+sdlHintAndroidApkExpansionMainFileVersion = extern "SDL_HINT_ANDROID_APK_EXPANSION_MAIN_FILE_VERSION" "SDL.h"
+
+sdlHintAndroidApkExpansionPatchFileVersion :: SDLHint
+sdlHintAndroidApkExpansionPatchFileVersion = extern "SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION" "SDL.h"
+
+sdlHintAndroidSeparateMouseAndTouch :: SDLHint
+sdlHintAndroidSeparateMouseAndTouch = extern "SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH" "SDL.h"
+
+sdlHintAppleTvControllerUiEvents :: SDLHint
+sdlHintAppleTvControllerUiEvents = extern "SDL_HINT_APPLE_TV_CONTROLLER_UI_EVENTS" "SDL.h"
+
+sdlHintAppleTvRemoteAllowRotation :: SDLHint
+sdlHintAppleTvRemoteAllowRotation = extern "SDL_HINT_APPLE_TV_REMOTE_ALLOW_ROTATION" "SDL.h"
+
+sdlHintBmpSaveLegacyFormat :: SDLHint
+sdlHintBmpSaveLegacyFormat = extern "SDL_HINT_BMP_SAVE_LEGACY_FORMAT" "SDL.h"
+
+sdlHintEmscriptenKeyboardElement :: SDLHint
+sdlHintEmscriptenKeyboardElement = extern "SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT" "SDL.h"
+
+sdlHintFramebufferAcceleration :: SDLHint
+sdlHintFramebufferAcceleration = extern "SDL_HINT_FRAMEBUFFER_ACCELERATION" "SDL.h"
+
+sdlHintGamecontrollerconfig :: SDLHint
+sdlHintGamecontrollerconfig = extern "SDL_HINT_GAMECONTROLLERCONFIG" "SDL.h"
+
+sdlHintGrabKeyboard :: SDLHint
+sdlHintGrabKeyboard = extern "SDL_HINT_GRAB_KEYBOARD" "SDL.h"
+
+sdlHintIdleTimerDisabled :: SDLHint
+sdlHintIdleTimerDisabled = extern "SDL_HINT_IDLE_TIMER_DISABLED" "SDL.h"
+
+sdlHintImeInternalEditing :: SDLHint
+sdlHintImeInternalEditing = extern "SDL_HINT_IME_INTERNAL_EDITING" "SDL.h"
+
+sdlHintJoystickAllowBackgroundEvents :: SDLHint
+sdlHintJoystickAllowBackgroundEvents = extern "SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS" "SDL.h"
+
+sdlHintMacBackgroundApp :: SDLHint
+sdlHintMacBackgroundApp = extern "SDL_HINT_MAC_BACKGROUND_APP" "SDL.h"
+
+sdlHintMacCtrlClickEmulateRightClick :: SDLHint
+sdlHintMacCtrlClickEmulateRightClick = extern "SDL_HINT_MAC_CTRL_CLICK_EMULATE_RIGHT_CLICK" "SDL.h"
+
+sdlHintMouseFocusClickthrough :: SDLHint
+sdlHintMouseFocusClickthrough = extern "SDL_HINT_MOUSE_FOCUS_CLICKTHROUGH" "SDL.h"
+
+sdlHintMouseRelativeModeWarp :: SDLHint
+sdlHintMouseRelativeModeWarp = extern "SDL_HINT_MOUSE_RELATIVE_MODE_WARP" "SDL.h"
+
+sdlHintNoSignalHandlers :: SDLHint
+sdlHintNoSignalHandlers = extern "SDL_HINT_NO_SIGNAL_HANDLERS" "SDL.h"
+
+sdlHintOrientations :: SDLHint
+sdlHintOrientations = extern "SDL_HINT_ORIENTATIONS" "SDL.h"
+
+sdlHintRenderDirect3d11Debug :: SDLHint
+sdlHintRenderDirect3d11Debug = extern "SDL_HINT_RENDER_DIRECT3D11_DEBUG" "SDL.h"
+
+sdlHintRenderDirect3dThreadsafe :: SDLHint
+sdlHintRenderDirect3dThreadsafe = extern "SDL_HINT_RENDER_DIRECT3D_THREADSAFE" "SDL.h"
+
+sdlHintRenderDriver :: SDLHint
+sdlHintRenderDriver = extern "SDL_HINT_RENDER_DRIVER" "SDL.h"
+
+sdlHintRenderOpenglShaders :: SDLHint
+sdlHintRenderOpenglShaders = extern "SDL_HINT_RENDER_OPENGL_SHADERS" "SDL.h"
+
+sdlHintRenderScaleQuality :: SDLHint
+sdlHintRenderScaleQuality = extern "SDL_HINT_RENDER_SCALE_QUALITY" "SDL.h"
+
+sdlHintRenderVsync :: SDLHint
+sdlHintRenderVsync = extern "SDL_HINT_RENDER_VSYNC" "SDL.h"
+
+sdlHintRpiVideoLayer :: SDLHint
+sdlHintRpiVideoLayer = extern "SDL_HINT_RPI_VIDEO_LAYER" "SDL.h"
+
+sdlHintThreadStackSize :: SDLHint
+sdlHintThreadStackSize = extern "SDL_HINT_THREAD_STACK_SIZE" "SDL.h"
+
+sdlHintTimerResolution :: SDLHint
+sdlHintTimerResolution = extern "SDL_HINT_TIMER_RESOLUTION" "SDL.h"
+
+sdlHintVideoAllowScreensaver :: SDLHint
+sdlHintVideoAllowScreensaver = extern "SDL_HINT_VIDEO_ALLOW_SCREENSAVER" "SDL.h"
+
+sdlHintVideoHighdpiDisabled :: SDLHint
+sdlHintVideoHighdpiDisabled = extern "SDL_HINT_VIDEO_HIGHDPI_DISABLED" "SDL.h"
+
+sdlHintVideoMacFullscreenSpaces :: SDLHint
+sdlHintVideoMacFullscreenSpaces = extern "SDL_HINT_VIDEO_MAC_FULLSCREEN_SPACES" "SDL.h"
+
+sdlHintVideoMinimizeOnFocusLoss :: SDLHint
+sdlHintVideoMinimizeOnFocusLoss = extern "SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS" "SDL.h"
+
+sdlHintVideoWindowSharePixelFormat :: SDLHint
+sdlHintVideoWindowSharePixelFormat = extern "SDL_HINT_VIDEO_WINDOW_SHARE_PIXEL_FORMAT" "SDL.h"
+
+sdlHintVideoWinD3dcompiler :: SDLHint
+sdlHintVideoWinD3dcompiler = extern "SDL_HINT_VIDEO_WIN_D3DCOMPILER" "SDL.h"
+
+sdlHintVideoX11NetWmPing :: SDLHint
+sdlHintVideoX11NetWmPing = extern "SDL_HINT_VIDEO_X11_NET_WM_PING" "SDL.h"
+
+sdlHintVideoX11Xinerama :: SDLHint
+sdlHintVideoX11Xinerama = extern "SDL_HINT_VIDEO_X11_XINERAMA" "SDL.h"
+
+sdlHintVideoX11Xrandr :: SDLHint
+sdlHintVideoX11Xrandr = extern "SDL_HINT_VIDEO_X11_XRANDR" "SDL.h"
+
+sdlHintVideoX11Xvidmode :: SDLHint
+sdlHintVideoX11Xvidmode = extern "SDL_HINT_VIDEO_X11_XVIDMODE" "SDL.h"
+
+sdlHintWindowsDisableThreadNaming :: SDLHint
+sdlHintWindowsDisableThreadNaming = extern "SDL_HINT_WINDOWS_DISABLE_THREAD_NAMING" "SDL.h"
+
+sdlHintWindowsEnableMessageloop :: SDLHint
+sdlHintWindowsEnableMessageloop = extern "SDL_HINT_WINDOWS_ENABLE_MESSAGELOOP" "SDL.h"
+
+sdlHintWindowsNoCloseOnAltF4 :: SDLHint
+sdlHintWindowsNoCloseOnAltF4 = extern "SDL_HINT_WINDOWS_NO_CLOSE_ON_ALT_F4" "SDL.h"
+
+sdlHintWindowFrameUsableWhileCursorHidden :: SDLHint
+sdlHintWindowFrameUsableWhileCursorHidden = extern "SDL_HINT_WINDOW_FRAME_USABLE_WHILE_CURSOR_HIDDEN" "SDL.h"
+
+sdlHintWinrtHandleBackButton :: SDLHint
+sdlHintWinrtHandleBackButton = extern "SDL_HINT_WINRT_HANDLE_BACK_BUTTON" "SDL.h"
+
+sdlHintWinrtPrivacyPolicyLabel :: SDLHint
+sdlHintWinrtPrivacyPolicyLabel = extern "SDL_HINT_WINRT_PRIVACY_POLICY_LABEL" "SDL.h"
+
+sdlHintWinrtPrivacyPolicyUrl :: SDLHint
+sdlHintWinrtPrivacyPolicyUrl = extern "SDL_HINT_WINRT_PRIVACY_POLICY_URL" "SDL.h"
+
+sdlHintXinputEnabled :: SDLHint
+sdlHintXinputEnabled = extern "SDL_HINT_XINPUT_ENABLED" "SDL.h"
+
+sdlHintXinputUseOldJoystickMapping :: SDLHint
+sdlHintXinputUseOldJoystickMapping = extern "SDL_HINT_XINPUT_USE_OLD_JOYSTICK_MAPPING" "SDL.h"
 
 sdlModule :: Module
 sdlModule = package "ivory_sdl" $ do
@@ -214,6 +558,8 @@ sdlModule = package "ivory_sdl" $ do
   incl sdlRenderCopy
   incl sdlRenderPresent
   incl sdlDelay
+  incl sdlSetHint
+  incl sdlGlSetAttribute
   inclSym sdlInitTimer
   inclSym sdlInitAudio
   inclSym sdlInitVideo
@@ -238,3 +584,81 @@ sdlModule = package "ivory_sdl" $ do
   inclSym sdlRendererAccelerated
   inclSym sdlRendererPresentVSync
   inclSym sdlRendererTargetTexture
+  inclSym sdlGlRedSize
+  inclSym sdlGlGreenSize
+  inclSym sdlGlBlueSize
+  inclSym sdlGlAlphaSize
+  inclSym sdlGlBufferSize
+  inclSym sdlGlDoublebuffer
+  inclSym sdlGlDepthSize
+  inclSym sdlGlStencilSize
+  inclSym sdlGlAccumRedSize
+  inclSym sdlGlAccumGreenSize
+  inclSym sdlGlAccumBlueSize
+  inclSym sdlGlAccumAlphaSize
+  inclSym sdlGlStereo
+  inclSym sdlGlMultisamplebuffers
+  inclSym sdlGlMultisamplesamples
+  inclSym sdlGlAcceleratedVisual
+  inclSym sdlGlContextMajorVersion
+  inclSym sdlGlContextMinorVersion
+  inclSym sdlGlContextFlags
+  inclSym sdlGlContextProfileMask
+  inclSym sdlGlShareWithCurrentContext
+  inclSym sdlGlFramebufferSrgbCapable
+  inclSym sdlGlContextReleaseBehavior
+  inclSym sdlGlContextDebugFlag
+  inclSym sdlGlContextForwardCompatibleFlag
+  inclSym sdlGlContextRobustAccessFlag
+  inclSym sdlGlContextResetIsolationFlag
+  inclSym sdlGlContextProfileCore
+  inclSym sdlGlContextProfileCompatibility
+  inclSym sdlGlContextProfileEs
+  inclSym sdlHintAccelerometerAsJoystick
+  inclSym sdlHintAndroidApkExpansionMainFileVersion
+  inclSym sdlHintAndroidApkExpansionPatchFileVersion
+  inclSym sdlHintAndroidSeparateMouseAndTouch
+  inclSym sdlHintAppleTvControllerUiEvents
+  inclSym sdlHintAppleTvRemoteAllowRotation
+  inclSym sdlHintBmpSaveLegacyFormat
+  inclSym sdlHintEmscriptenKeyboardElement
+  inclSym sdlHintFramebufferAcceleration
+  inclSym sdlHintGamecontrollerconfig
+  inclSym sdlHintGrabKeyboard
+  inclSym sdlHintIdleTimerDisabled
+  inclSym sdlHintImeInternalEditing
+  inclSym sdlHintJoystickAllowBackgroundEvents
+  inclSym sdlHintMacBackgroundApp
+  inclSym sdlHintMacCtrlClickEmulateRightClick
+  inclSym sdlHintMouseFocusClickthrough
+  inclSym sdlHintMouseRelativeModeWarp
+  inclSym sdlHintNoSignalHandlers
+  inclSym sdlHintOrientations
+  inclSym sdlHintRenderDirect3d11Debug
+  inclSym sdlHintRenderDirect3dThreadsafe
+  inclSym sdlHintRenderDriver
+  inclSym sdlHintRenderOpenglShaders
+  inclSym sdlHintRenderScaleQuality
+  inclSym sdlHintRenderVsync
+  inclSym sdlHintRpiVideoLayer
+  inclSym sdlHintThreadStackSize
+  inclSym sdlHintTimerResolution
+  inclSym sdlHintVideoAllowScreensaver
+  inclSym sdlHintVideoHighdpiDisabled
+  inclSym sdlHintVideoMacFullscreenSpaces
+  inclSym sdlHintVideoMinimizeOnFocusLoss
+  inclSym sdlHintVideoWindowSharePixelFormat
+  inclSym sdlHintVideoWinD3dcompiler
+  inclSym sdlHintVideoX11NetWmPing
+  inclSym sdlHintVideoX11Xinerama
+  inclSym sdlHintVideoX11Xrandr
+  inclSym sdlHintVideoX11Xvidmode
+  inclSym sdlHintWindowsDisableThreadNaming
+  inclSym sdlHintWindowsEnableMessageloop
+  inclSym sdlHintWindowsNoCloseOnAltF4
+  inclSym sdlHintWindowFrameUsableWhileCursorHidden
+  inclSym sdlHintWinrtHandleBackButton
+  inclSym sdlHintWinrtPrivacyPolicyLabel
+  inclSym sdlHintWinrtPrivacyPolicyUrl
+  inclSym sdlHintXinputEnabled
+  inclSym sdlHintXinputUseOldJoystickMapping
