@@ -1,5 +1,6 @@
 packages:
-  ./simple-rts
-  ./ivory-sdl
   ./ivory-memory
+  ./ivory-nuklear
+  ./ivory-sdl
   ./ivory-string
+  ./simple-rts
