@@ -6,6 +6,7 @@ in pkgs.haskellPackages.shellFor {
     cabal-install
     ghcid
     pkgs.SDL2
+    pkgs.glew
     pkgs.pkgconfig
     pkgs.elfkickers
   ];
